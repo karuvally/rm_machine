@@ -16,6 +16,7 @@ def generate_list(start_path):
     # Generate a datetime object
     current_time = datetime.now()
 
+    # Find files older than three months under start_path
     for root, directories, files in os.walk(start_path):
         for filename in files:
             file_path = os.path.join(root, filename)
@@ -28,8 +29,16 @@ def generate_list(start_path):
     return remove_list
 
 # The main function
-def main():
-    pass            
+def main(parser):
+    # Parse the arguments
+    arguments = parser.parse_args()
 
+    # Calculate disk usage
+    disk_usage = shutil.disk_usage(arguments.path)
+    disk_usage_percent = (disk_usage.used / disk_usage.total) * 100
 
-generate_list("/home/sreedevi")
+    # Do a cleanup if disk usage greater than 80%
+    if disk_usage_percent > 80:
+        files_to_remove = generate_list(arguments.path)
+    for file_path in files_to_remove:
+        os.remove(file_path)
