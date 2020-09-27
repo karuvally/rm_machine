@@ -48,8 +48,8 @@ def main(parser):
 
     # Delete older files if disk usage > 80%
     if disk_usage_percent > 80 and arguments.remove_files:
-    for file_path in files_to_remove:
-        os.remove(file_path)
+        for file_path in files_to_remove:
+            os.remove(file_path)
 
 
 if __name__ == "__main__":
