@@ -56,6 +56,6 @@ if __name__ == "__main__":
         required = True,
         help = "Path where cleanup is to be done"
     )
-    
+
     # Call the main function
-    main(arguments)
+    main(parser)
