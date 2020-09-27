@@ -1,6 +1,10 @@
 #!/usr/bin/env python3
 # Script to remove files older than three months
 
+# TODO
+# Disk usage percent should be argument
+# Removal should happen only if --remove-files is passed
+
 # Import serious stuff
 import os
 import shutil
@@ -50,11 +54,16 @@ if __name__ == "__main__":
         description = "Remove files older than 3 months if disk usage > 80%"
     )
     parser.add_argument(
-        "-p",
         "--path",
         type = str,
         required = True,
         help = "Path where cleanup is to be done"
+    )
+    parser.add_argument(
+        "--remove-files",
+        default = False,
+        action = "store_true"
+        help = "Enable removal of files"
     )
 
     # Call the main function
