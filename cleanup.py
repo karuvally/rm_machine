@@ -68,7 +68,7 @@ def main(parser):
     # Find files older than three months
     files_to_remove = generate_list(arguments.path, arguments.oldfile_age)
 
-    # Remove the files!
+    # Do the file removal, for real!
     remove_files(
         files_to_remove,
         arguments.remove_files,
