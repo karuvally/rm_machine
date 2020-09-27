@@ -47,8 +47,11 @@ def main(parser):
         for file_path in files_to_remove:
             print("[Info]: Removing", file_path)
             os.remove(file_path)
+    elif disk_usage_percent < arguments.disk_usage and arguments.remove_files:
+        print("Disk usage below", arguments.disk_usage + "%")
     elif files_to_remove:
-        print("Printing list of old files...")
+        print("No files will be deleted...")
+        print("Printing files older than", arguments.oldfile_age, "day(s)")
         for file_path in files_to_remove:
             print(file_path)
 
