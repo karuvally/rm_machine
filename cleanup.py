@@ -64,7 +64,7 @@ if __name__ == "__main__":
     parser.add_argument(
         "--remove-files",
         default = False,
-        action = "store_true"
+        action = "store_true",
         help = "Enable removal of files"
     )
     parser.add_argument(
