@@ -3,7 +3,6 @@
 
 # TODO
 # Disk usage percent should be argument
-# File age should be an argument
 
 # Import serious stuff
 import os
@@ -74,6 +73,11 @@ if __name__ == "__main__":
         default = 90,
         help = "Files older than oldfile-age will be deleted, default: 90 days"
     )
-
+    parser.add_argument(
+        "--disk-usage",
+        type = int,
+        default = 80,
+        help = "Removal files only if disk-usage > given percent (default: 80)"
+    )
     # Call the main function
     main(parser)
