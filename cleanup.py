@@ -4,6 +4,7 @@
 # Import serious stuff
 import os
 import shutil
+import argparse
 from datetime import datetime
 import pdb
 
@@ -42,3 +43,19 @@ def main(parser):
         files_to_remove = generate_list(arguments.path)
     for file_path in files_to_remove:
         os.remove(file_path)
+
+
+if __name__ == "__main__":
+    parser = argparse.ArgumentParser(
+        description = "Remove files older than 3 months if disk usage > 80%"
+    )
+    parser.add_argument(
+        "-p",
+        "--path",
+        type = str,
+        required = True,
+        help = "Path where cleanup is to be done"
+    )
+    
+    # Call the main function
+    main(arguments)
