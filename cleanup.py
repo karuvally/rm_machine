@@ -30,20 +30,15 @@ def generate_list(start_path, oldfile_age):
     return remove_list
 
 
-# The main function
-def main(parser):
-    # Parse the arguments
-    arguments = parser.parse_args()
-
-    # Calculate disk usage
-    disk_usage = shutil.disk_usage(arguments.path)
-    disk_usage_percent = (disk_usage.used / disk_usage.total) * 100
-
-    # Find files older than three months
-    files_to_remove = generate_list(arguments.path, arguments.oldfile_age)
-
-    # Delete older files if disk usage > arguments.disk_usage %
-    if disk_usage_percent > arguments.disk_usage and arguments.remove_files:
+# Remove files if --remove-files is passed
+def remove_files(
+    files_to_remove,
+    remove_files,
+    disk_usage_limit,
+    disk_usage,
+    oldfile_age):
+    # Delete older files only if disk usage > disk_usage %
+    if disk_usage > disk_usage_limit and remove_files:
         for file_path in files_to_remove:
             try:
                 print("[Info]: Removing", file_path)
@@ -51,14 +46,36 @@ def main(parser):
             except:
                 print("[Warning]:", file_path, "could not be removed!")
 
-    elif disk_usage_percent < arguments.disk_usage and arguments.remove_files:
-        print("Disk usage below", str(arguments.disk_usage) + "%")
+    elif disk_usage < disk_usage_limit and remove_files:
+        print("Disk usage below", str(int(disk_usage)) + "%")
         print("No files will be deleted...")
     elif files_to_remove:
         print("No files will be deleted...")
-        print("Printing files older than", arguments.oldfile_age, "day(s)")
+        print("Printing files older than", oldfile_age, "day(s)")
         for file_path in files_to_remove:
             print(file_path)
+
+
+# The main function
+def main(parser):
+    # Parse the arguments
+    arguments = parser.parse_args()
+
+    # Calculate disk usage
+    disk_usage = shutil.disk_usage(arguments.path)
+    disk_usage = (disk_usage.used / disk_usage.total) * 100
+
+    # Find files older than three months
+    files_to_remove = generate_list(arguments.path, arguments.oldfile_age)
+
+    # Remove the files!
+    remove_files(
+        files_to_remove,
+        arguments.remove_files,
+        arguments.disk_usage_limit,
+        disk_usage,
+        arguments.oldfile_age
+    )
 
 
 if __name__ == "__main__":
@@ -84,10 +101,10 @@ if __name__ == "__main__":
         help = "Files older than oldfile-age will be deleted, default: 90 days"
     )
     parser.add_argument(
-        "--disk-usage",
+        "--disk-usage-limit",
         type = int,
         default = 80,
-        help = "Removal files only if disk-usage > given percent (default: 80)"
+        help = "Removal files only if disk-usage limit is reached,default: 80%"
     )
     # Call the main function
     main(parser)
