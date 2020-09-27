@@ -45,8 +45,12 @@ def main(parser):
     # Delete older files if disk usage > arguments.disk_usage %
     if disk_usage_percent > arguments.disk_usage and arguments.remove_files:
         for file_path in files_to_remove:
-            print("[Info]: Removing", file_path)
-            os.remove(file_path)
+            try:
+                print("[Info]: Removing", file_path)
+                os.remove(file_path)
+            except:
+                print("[Warning]:", file_path, "could not be removed!")
+
     elif disk_usage_percent < arguments.disk_usage and arguments.remove_files:
         print("Disk usage below", str(arguments.disk_usage) + "%")
         print("No files will be deleted...")
