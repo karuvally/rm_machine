@@ -4,7 +4,6 @@
 # TODO
 # Disk usage percent should be argument
 # File age should be an argument
-# Removal should happen only if --remove-files is passed
 
 # Import serious stuff
 import os
@@ -15,7 +14,7 @@ import pdb
 
 
 # Generate list of files to be deleted
-def generate_list(start_path):
+def generate_list(start_path, oldfile_age):
     # List of files to be removed
     remove_list = []
 
@@ -30,7 +29,7 @@ def generate_list(start_path):
                 os.path.getmtime(file_path)
             )
             file_age = current_time - modified_time
-            if file_age.days > 90:
+            if file_age.days > oldfile_age:
                 remove_list.append(file_path)
     return remove_list
 
@@ -45,7 +44,7 @@ def main(parser):
     disk_usage_percent = (disk_usage.used / disk_usage.total) * 100
 
     # Find files older than three months
-    files_to_remove = generate_list(arguments.path)
+    files_to_remove = generate_list(arguments.path, arguments.oldfile_age)
 
     # Delete older files if disk usage > 80%
     if disk_usage_percent > 80 and arguments.remove_files:
@@ -68,6 +67,12 @@ if __name__ == "__main__":
         default = False,
         action = "store_true"
         help = "Enable removal of files"
+    )
+    parser.add_argument(
+        "--oldfile-age",
+        type = int,
+        default = 90,
+        help = "Files older than oldfile-age will be deleted, default: 90 days"
     )
 
     # Call the main function
