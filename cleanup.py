@@ -45,8 +45,8 @@ def main(parser):
     # Find files older than three months
     files_to_remove = generate_list(arguments.path, arguments.oldfile_age)
 
-    # Delete older files if disk usage > 80%
-    if disk_usage_percent > 80 and arguments.remove_files:
+    # Delete older files if disk usage > arguments.disk_usage %
+    if disk_usage_percent > arguments.disk_usage and arguments.remove_files:
         for file_path in files_to_remove:
             os.remove(file_path)
 
