@@ -3,7 +3,7 @@
 
 # Import serious stuff
 import os
-import calendar
+import shutil
 from datetime import datetime
 import pdb
 
@@ -25,7 +25,11 @@ def generate_list(start_path):
             file_age = current_time - modified_time
             if file_age.days > 90:
                 remove_list.append(file_path)
-            
+    return remove_list
+
+# The main function
+def main():
+    pass            
 
 
 generate_list("/home/sreedevi")
