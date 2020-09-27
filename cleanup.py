@@ -1,9 +1,6 @@
 #!/usr/bin/env python3
 # Script to remove files older than three months
 
-# TODO
-# Disk usage percent should be argument
-
 # Import serious stuff
 import os
 import shutil
